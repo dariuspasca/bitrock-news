@@ -6,8 +6,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: FeedView
+      name: 'feed',
+      component: FeedView,
+      meta: { requiresAuth: false }
+    },
+    {
+      name: 'user',
+      path: '/user/:username',
+      component: () => import('../views/FeedView.vue'),
+      meta: { requiresAuth: false }
     }
   ]
 })
