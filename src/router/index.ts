@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import FeedView from '@/views/FeedView.vue'
+import supabase from '@/libs/supabase-client'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,8 +16,23 @@ const router = createRouter({
       path: '/user/:username',
       component: () => import('../views/FeedView.vue'),
       meta: { requiresAuth: false }
+    },
+    {
+      name: 'login',
+      path: '/login',
+      component: () => import('../views/LoginView.vue'),
+      meta: { requiresAuth: false }
     }
   ]
+})
+
+router.beforeEach(async (to, from, next): Promise<void> => {
+  const session = await supabase.auth.getSession()
+
+  if (to.path === '/login' && session.data.session?.access_token) next('/')
+
+  if (to.meta.requiresAuth && !session.data.session?.access_token) next('/login')
+  else next()
 })
 
 export default router

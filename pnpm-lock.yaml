@@ -38,6 +38,9 @@ dependencies:
   vue-apollo:
     specifier: ^3.1.0
     version: 3.1.0(graphql-tag@2.12.6)
+  vue-auth-ui:
+    specifier: ^0.1.1
+    version: 0.1.1
   vue-router:
     specifier: ^4.2.2
     version: 4.2.2(vue@3.3.4)
@@ -1939,6 +1942,10 @@ packages:
   /@rushstack/eslint-patch@1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
+
+  /@stitches/core@1.2.8:
+    resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}
+    dev: false
 
   /@supabase/functions-js@2.1.2:
     resolution: {integrity: sha512-QCR6pwJs9exCl37bmpMisUd6mf+0SUBJ6mUpiAjEkSJ/+xW8TCuO14bvkWHADd5hElJK9MxNlMQXxSA4DRz9nQ==}
@@ -4380,6 +4387,10 @@ packages:
       p-locate: 5.0.0
     dev: true
 
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
+
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
@@ -5820,6 +5831,14 @@ packages:
       graphql-tag: 2.12.6(graphql@16.7.1)
       serialize-javascript: 4.0.0
       throttle-debounce: 2.3.0
+    dev: false
+
+  /vue-auth-ui@0.1.1:
+    resolution: {integrity: sha512-QeyKM1/FaIBA3mTvPNyMaZVx+TFwrcMu9RzsG7WGNInf25aaZe81Lk3IDg/GjjGTb0UG0Twi5hndExP6ZP8rXw==}
+    dependencies:
+      '@stitches/core': 1.2.8
+      lodash-es: 4.17.21
+      vue: 3.3.4
     dev: false
 
   /vue-demi@0.13.11(vue@3.3.4):
