@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  db-push-test:
+  db-push:
     runs-on: ubuntu-22.04
 
     env:
