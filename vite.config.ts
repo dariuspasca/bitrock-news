@@ -30,7 +30,6 @@ export default ({ mode }: any) => {
             'src/types/graphql.types.ts': {
               plugins: ['typescript', 'typescript-operations', 'typescript-vue-apollo'],
               config: {
-                avoidOptionals: true,
                 typesPrefix: 'I',
                 skipTypename: true,
                 operationResultSuffix: 'Result',

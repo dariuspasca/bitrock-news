@@ -14,8 +14,13 @@ const { result, loading } = provideApolloClient(apolloClient)(() =>
 
 <template>
   <div v-if="loading">Loading...</div>
-  <div v-else v-for="item in result?.postsCollection?.edges" :key="item.node.id">
+  <div
+    v-else-if="result?.postsCollection?.edges.length"
+    v-for="item in result?.postsCollection?.edges"
+    :key="item.node.id"
+  >
     <FeedItem :post="item.node" />
   </div>
+  <div v-else><h2>No posts</h2></div>
 </template>
 @/stores/auth

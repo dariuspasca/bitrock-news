@@ -38,7 +38,7 @@ const userStore = useAuthStore()
       </RouterLink>
       <div v-else class="flex gap-4">
         <RouterLink
-          to="/account"
+          :to="{ name: 'user', params: { username: userStore.user.username } }"
           class="mt-4 inline-flex items-center text-sm text-gray-400 hover:text-gray-900 md:mr-5 md:mt-0"
         >
           {{ userStore.user.username }}

@@ -3,7 +3,7 @@ import { Feed_PostFragment } from '@/graphql/fragments/feed-post'
 
 export const GET_FEED = gql(`
   query Feed($profileId: UUID) {
-  postsCollection {
+  postsCollection(first: 10) {
     edges {
       node {
         ...Feed_PostFragment

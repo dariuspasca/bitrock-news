@@ -14,7 +14,7 @@ const router = createRouter({
     {
       name: 'user',
       path: '/user/:username',
-      component: () => import('../views/FeedView.vue'),
+      component: () => import('../views/UserView.vue'),
       meta: { requiresAuth: false }
     },
     {
