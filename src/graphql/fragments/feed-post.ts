@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import { Votes_PostFragment } from '@/graphql/fragments/votes-post'
 
-export const Feed_PostFragment = gql(`
+export const Feed_PostFragment = gql(/* GraphQL */ `
   fragment Feed_PostFragment on posts {
     id
     title
@@ -12,7 +12,7 @@ export const Feed_PostFragment = gql(`
       username
     }
     comments: commentsCollection {
-          totalCount
+      totalCount
     }
     ...Votes_PostFragment
   }

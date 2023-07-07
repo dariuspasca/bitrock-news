@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const Votes_PostFragment = gql(`
+export const Votes_PostFragment = gql(/* GraphQL */ `
   fragment Votes_PostFragment on posts {
     upVoteByViewer: votesCollection(
       filter: { profile_id: { eq: $profileId }, direction: { eq: UP } }
