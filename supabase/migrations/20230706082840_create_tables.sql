@@ -98,6 +98,6 @@ language plpgsql security definer;
 
 -- Create a trigger to execute the function when a new vote is added
 create trigger on_vote_created
-after insert on public.votes
+after insert or delete on public.votes
 for each row
 execute function public.update_post_score();
