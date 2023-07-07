@@ -15,7 +15,7 @@ create policy "Users can update own profile." on public.profiles
 create policy "Posts are viewable by everyone." on public.posts
   for select using (true);
 create policy "Authenticated users can add new posts." on public.posts 
-  for select to authenticated using (true);
+  for insert with check ( auth.role() = 'authenticated');
 create policy "Posts can be deleted by the creator." on public.posts
   for delete using ( auth.uid() = profile_id );
 create policy "Authenticated users can comment posts." on public.comments 
