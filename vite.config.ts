@@ -37,7 +37,8 @@ export default ({ mode }: any) => {
                 flattenGeneratedTypesIncludeFragments: true,
                 dedupeOperationSuffix: true,
                 useTypeImports: true,
-                vueCompositionApiImportFrom: 'vue'
+                vueCompositionApiImportFrom: 'vue',
+                withCompositionFunctions: true
               }
             }
           },

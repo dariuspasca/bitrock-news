@@ -2,7 +2,7 @@ import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache } from '@apollo
 import { setContext } from '@apollo/client/link/context'
 import supabase from './supabase-client'
 
-const cache = new InMemoryCache()
+export const cache = new InMemoryCache()
 
 const httpLink = createHttpLink({
   uri: `${import.meta.env.VITE_PUBLIC_SUPABASE_URL}/graphql/v1`

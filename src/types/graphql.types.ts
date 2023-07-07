@@ -524,7 +524,7 @@ export type IProfiles = INode & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output']
   postsCollection: Maybe<IPostsConnection>
-  status: Maybe<IUser_Status>
+  status: IUser_Status
   username: Maybe<Scalars['String']['output']>
   votesCollection: Maybe<IVotesConnection>
 }
@@ -727,6 +727,8 @@ export type IFeed_PostFragment = {
   downVoteByViewer: { totalCount: number } | null
 }
 
+export type IUser_Fragment = { id: any; username: string | null; bio: string | null }
+
 export type IVotes_PostFragment = {
   upVoteByViewer: { totalCount: number } | null
   downVoteByViewer: { totalCount: number } | null
@@ -760,6 +762,16 @@ export type IFeedQueryResult = {
   } | null
 }
 
+export type IUserProfileQueryVariables = Exact<{
+  id: Scalars['UUID']['input']
+}>
+
+export type IUserProfileQueryResult = {
+  profilesCollection: {
+    edges: Array<{ node: { id: any; username: string | null; bio: string | null } }>
+  } | null
+}
+
 export const Votes_PostFragmentDoc = gql`
   fragment Votes_PostFragment on posts {
     upVoteByViewer: votesCollection(
@@ -790,6 +802,13 @@ export const Feed_PostFragmentDoc = gql`
     ...Votes_PostFragment
   }
   ${Votes_PostFragmentDoc}
+`
+export const User_FragmentDoc = gql`
+  fragment User_Fragment on profiles {
+    id
+    username
+    bio
+  }
 `
 export const FeedDocument = gql`
   query Feed($profileId: UUID) {
@@ -868,4 +887,76 @@ export function useFeedLazyQuery(
 export type FeedQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
   IFeedQueryResult,
   IFeedQueryVariables
+>
+export const UserProfileDocument = gql`
+  query UserProfile($id: UUID!) {
+    profilesCollection(filter: { id: { eq: $id } }) {
+      edges {
+        node {
+          ...User_Fragment
+        }
+      }
+    }
+  }
+  ${User_FragmentDoc}
+`
+
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a Vue component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useUserProfileQuery({
+ *   id: // value for 'id'
+ * });
+ */
+export function useUserProfileQuery(
+  variables:
+    | IUserProfileQueryVariables
+    | VueCompositionApi.Ref<IUserProfileQueryVariables>
+    | ReactiveFunction<IUserProfileQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useQuery<IUserProfileQueryResult, IUserProfileQueryVariables>(
+    UserProfileDocument,
+    variables,
+    options
+  )
+}
+export function useUserProfileLazyQuery(
+  variables:
+    | IUserProfileQueryVariables
+    | VueCompositionApi.Ref<IUserProfileQueryVariables>
+    | ReactiveFunction<IUserProfileQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<IUserProfileQueryResult, IUserProfileQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<IUserProfileQueryResult, IUserProfileQueryVariables>(
+    UserProfileDocument,
+    variables,
+    options
+  )
+}
+export type UserProfileQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
+  IUserProfileQueryResult,
+  IUserProfileQueryVariables
 >
