@@ -7,7 +7,7 @@ create table public.profiles (
   id          uuid not null primary key, -- UUID from auth.users
   username    text,
   bio         text,
-  status      user_status default 'OFFLINE'::public.user_status,
+  status      user_status default 'OFFLINE'::public.user_status not null,
   unique(username)
 );
 comment on table public.profiles is 'Profile data for each user.';
