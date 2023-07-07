@@ -3,13 +3,12 @@ import { RouterView } from 'vue-router'
 import { provideApolloClient } from '@vue/apollo-composable'
 import MainNav from '@/components/main-nav.vue'
 import NotificationToast from '@/components/notification-toast.vue'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { NotificationGroup } from '@/libs/notiwind'
 import supabase from '@/libs/supabase-client'
 import apolloClient from '@/libs/apollo-provider'
 import { useUserProfileQuery } from '@/types/graphql.types'
-
-const userStore = useUserStore()
+const userStore = useAuthStore()
 
 supabase.auth.onAuthStateChange(async (_, session) => {
   const { refetch, onResult } = provideApolloClient(apolloClient)(() =>
@@ -43,3 +42,4 @@ supabase.auth.onAuthStateChange(async (_, session) => {
     <RouterView />
   </main>
 </template>
+@/stores/auth

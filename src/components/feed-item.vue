@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Calendar, MessageCircle, Rocket, UserCircle } from 'lucide-vue-next'
+import VoteButtons from '@/components/vote-buttons.vue'
 import { type IFeed_PostFragment } from '@/types/graphql.types'
 import { timeAgo } from '@/libs/time-ago'
 

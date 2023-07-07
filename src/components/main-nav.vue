@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import BitrockLogo from '@/components/bitrock-logo.vue'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 
-const userStore = useUserStore()
+const userStore = useAuthStore()
 </script>
 
 <template>
@@ -53,3 +53,4 @@ const userStore = useUserStore()
     </div>
   </header>
 </template>
+@/stores/auth

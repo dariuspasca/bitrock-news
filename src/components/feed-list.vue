@@ -1,20 +1,15 @@
-<script lang="ts">
+<script setup lang="ts">
 import FeedItem from '@/components/feed-item.vue'
+import apolloClient from '@/libs/apollo-provider'
+import { provideApolloClient } from '@vue/apollo-composable'
+import { useAuthStore } from '@/stores/auth'
 import { useFeedQuery } from '@/types/graphql.types'
 
-export default {
-  name: 'FeedList',
-  components: { FeedItem },
-  setup() {
-    const { result, loading, error } = useFeedQuery()
+const userStore = useAuthStore()
 
-    return {
-      result,
-      loading,
-      error
-    }
-  }
-}
+const { result, loading } = provideApolloClient(apolloClient)(() =>
+  useFeedQuery({ profileId: userStore.user?.id ?? null })
+)
 </script>
 
 <template>
@@ -23,3 +18,4 @@ export default {
     <FeedItem :post="item.node" />
   </div>
 </template>
+@/stores/auth
