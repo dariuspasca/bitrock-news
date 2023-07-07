@@ -46,7 +46,7 @@ const createdAt = computed(() => timeAgo.format(new Date(props.post.created_at))
           <a
             className="text-gray-400 hover:text-orange-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
           >
-            <UserCircle class="mr-1 inline-block h-4 w-4 rounded-full" />
+            <UserCircle class="mr-1 inline-block h-4 w-4" />
 
             {{ props.post.profile?.username }}
           </a>

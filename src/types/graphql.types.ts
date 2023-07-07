@@ -743,6 +743,14 @@ export type IDeletePostVoteMutationResult = {
   deleteFromvotesCollection: { __typename: 'votesDeleteResponse' }
 }
 
+export type IUpdateProfileMutationVariables = Exact<{
+  profileId: Scalars['UUID']['input']
+  username?: InputMaybe<Scalars['String']['input']>
+  bio?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type IUpdateProfileMutationResult = { updateprofilesCollection: { affectedCount: number } }
+
 export type IVotePostMutationVariables = Exact<{
   postId: Scalars['BigInt']['input']
   profileId: Scalars['UUID']['input']
@@ -904,6 +912,55 @@ export function useDeletePostVoteMutation(
 export type DeletePostVoteMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
   IDeletePostVoteMutationResult,
   IDeletePostVoteMutationVariables
+>
+export const UpdateProfileDocument = gql`
+  mutation UpdateProfile($profileId: UUID!, $username: String, $bio: String) {
+    updateprofilesCollection(set: { id: $profileId, username: $username, bio: $bio }) {
+      affectedCount
+    }
+  }
+`
+
+/**
+ * __useUpdateProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateProfileMutation({
+ *   variables: {
+ *     profileId: // value for 'profileId'
+ *     username: // value for 'username'
+ *     bio: // value for 'bio'
+ *   },
+ * });
+ */
+export function useUpdateProfileMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        IUpdateProfileMutationResult,
+        IUpdateProfileMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          IUpdateProfileMutationResult,
+          IUpdateProfileMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    IUpdateProfileMutationResult,
+    IUpdateProfileMutationVariables
+  >(UpdateProfileDocument, options)
+}
+export type UpdateProfileMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+  IUpdateProfileMutationResult,
+  IUpdateProfileMutationVariables
 >
 export const VotePostDocument = gql`
   mutation VotePost($postId: BigInt!, $profileId: UUID!, $voteDirection: vote_direction!) {
