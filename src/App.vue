@@ -12,7 +12,7 @@ const userStore = useAuthStore()
 
 supabase.auth.onAuthStateChange(async (_, session) => {
   const { refetch, onResult } = provideApolloClient(apolloClient)(() =>
-    useUserProfileQuery({ id: session?.user.id ?? null })
+    useUserProfileQuery({ profileId: session?.user.id ?? null })
   )
 
   if (session) {
