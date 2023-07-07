@@ -18,8 +18,8 @@ import { Notification } from '@/libs/notiwind'
       v-for="notification in notifications"
       :key="notification.id"
       :class="{
-        'mx-auto mt-4 flex w-full max-w-sm overflow-hidden rounded-lg border-2 bg-zinc-900 shadow-md': true,
-        'border-indigo-500': notification.type !== 'error',
+        'mx-auto mt-4 flex w-full max-w-sm overflow-hidden rounded-lg border-2 bg-gray-100 shadow-md': true,
+        'border-orange-500': notification.type !== 'error',
         'border-pink-500': notification.type === 'error'
       }"
     >
@@ -28,12 +28,12 @@ import { Notification } from '@/libs/notiwind'
           <span
             :class="{
               'font-semibol': true,
-              'text-indigo-500': notification.type !== 'error',
+              'text-orange-500': notification.type !== 'error',
               'text-pink-500': notification.type === 'error'
             }"
             >{{ notification.title }}</span
           >
-          <p class="text-sm text-slate-200">
+          <p class="text-sm text-gray-800">
             {{ notification.text }}
           </p>
         </div>
