@@ -743,6 +743,16 @@ export type IDeletePostVoteMutationResult = {
   deleteFromvotesCollection: { __typename: 'votesDeleteResponse' }
 }
 
+export type ISubmitPostMutationVariables = Exact<{
+  profileId: Scalars['UUID']['input']
+  title?: InputMaybe<Scalars['String']['input']>
+  url?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type ISubmitPostMutationResult = {
+  insertIntopostsCollection?: { affectedCount: number } | null
+}
+
 export type IUpdateProfileMutationVariables = Exact<{
   profileId: Scalars['UUID']['input']
   username?: InputMaybe<Scalars['String']['input']>
@@ -912,6 +922,55 @@ export function useDeletePostVoteMutation(
 export type DeletePostVoteMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
   IDeletePostVoteMutationResult,
   IDeletePostVoteMutationVariables
+>
+export const SubmitPostDocument = gql`
+  mutation SubmitPost($profileId: UUID!, $title: String, $url: String) {
+    insertIntopostsCollection(objects: { profile_id: $profileId, title: $title, url: $url }) {
+      affectedCount
+    }
+  }
+`
+
+/**
+ * __useSubmitPostMutation__
+ *
+ * To run a mutation, you first call `useSubmitPostMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitPostMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useSubmitPostMutation({
+ *   variables: {
+ *     profileId: // value for 'profileId'
+ *     title: // value for 'title'
+ *     url: // value for 'url'
+ *   },
+ * });
+ */
+export function useSubmitPostMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        ISubmitPostMutationResult,
+        ISubmitPostMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          ISubmitPostMutationResult,
+          ISubmitPostMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<ISubmitPostMutationResult, ISubmitPostMutationVariables>(
+    SubmitPostDocument,
+    options
+  )
+}
+export type SubmitPostMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+  ISubmitPostMutationResult,
+  ISubmitPostMutationVariables
 >
 export const UpdateProfileDocument = gql`
   mutation UpdateProfile($profileId: UUID!, $username: String, $bio: String) {

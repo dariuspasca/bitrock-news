@@ -6,10 +6,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
       name: 'feed',
+      path: '/',
       component: FeedView,
       meta: { requiresAuth: false }
+    },
+    {
+      name: 'submit',
+      path: '/submit',
+      component: () => import('../views/SubmitView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       name: 'user',

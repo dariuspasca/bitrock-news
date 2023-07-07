@@ -22,11 +22,11 @@ const userStore = useAuthStore()
           ><span :class="{ 'text-black': isActive }">feed</span></RouterLink
         >
         <RouterLink
-          to="/newest"
+          to="/submit"
           class="mr-5 text-gray-400 hover:text-gray-900"
           v-slot="{ isActive }"
         >
-          <span :class="{ 'text-black': isActive }">newest</span>
+          <span :class="{ 'text-black': isActive }">submit</span>
         </RouterLink>
       </nav>
       <RouterLink

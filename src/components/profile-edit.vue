@@ -66,12 +66,12 @@ function updateProfile() {
   <form class="container mx-auto max-w-md px-5 py-24" v-on:submit.prevent="updateProfile">
     <h1 class="mb-5 text-xl font-semibold tracking-tight">Account</h1>
     <div class="mb-4">
-      <label htmlFor="username" class="mb-2 block"> Username </label>
+      <label htmlFor="username" class="mb-2 block">Username</label>
       <input class="w-full" autocomplete="off" id="username" type="text" v-model.trim="username" />
     </div>
 
     <div class="mb-2">
-      <label htmlFor="bio" class="mb-2 block"> Bio </label>
+      <label htmlFor="bio" class="mb-2 block">Bio</label>
       <textarea
         id="bio"
         class="w-full rounded-sm border-2 border-solid border-gray-100"
@@ -84,7 +84,7 @@ function updateProfile() {
       :disabled="loading"
       class="bg-orange-500 hover:bg-orange-600/90 text-white py-1 px-3 rounded text-xs"
     >
-      {{ loading ? 'Saving' : 'Save' }}
+      {{ loading ? 'Saving...' : 'Save' }}
     </button>
   </form>
 </template>
