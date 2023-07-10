@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { Auth, ThemeSupa, type Appereance, type Provider } from 'vue-auth-ui'
-import { type EmailCred } from '@/types/index'
 import supabase from '@/libs/supabase-client'
 
 const appearance: Appereance = {
@@ -17,8 +16,8 @@ const appearance: Appereance = {
       :providers="['github']"
       socialLayout="col"
       :appearance="appearance"
-      @signInWithPassword="(creds: EmailCred) => supabase.auth.signInWithPassword(creds)"
-      @signUp="(creds: EmailCred) => supabase.auth.signUp(creds)"
+      @signInWithPassword="(creds) => supabase.auth.signInWithPassword(creds)"
+      @signUp="(creds) => supabase.auth.signUp(creds)"
       @signInWithOAuth="(provider: Provider) => supabase.auth.signInWithOAuth(provider)"
     />
   </div>
