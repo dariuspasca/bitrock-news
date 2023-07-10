@@ -19,8 +19,8 @@ create policy "Authenticated users can add new posts." on public.posts
 create policy "Posts can be deleted by the creator." on public.posts
   for delete using ( auth.uid() = profile_id );
 create policy "Authenticated users can comment posts." on public.comments 
-  for select to authenticated using (true);
-create policy "Users can create or delete their own comments." on public.comments
+  for insert with check ( auth.role() = 'authenticated');
+create policy "Authenticated users can delete their own comments." on public.comments
   for delete using ( auth.uid() = profile_id );
 create policy "Comments are viewable by everyone." on public.comments
   for select using (true);
