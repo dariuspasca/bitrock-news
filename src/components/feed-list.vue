@@ -17,8 +17,6 @@ function fetchNextPage() {
       after: result.value?.postsCollection?.pageInfo.endCursor
     },
     updateQuery: (previousResult, { fetchMoreResult }) => {
-      console.log('🚀 ~ file: feed-list.vue:20 ~ fetchNextPage ~ fetchMoreResult:', fetchMoreResult)
-      console.log('🚀 ~ file: feed-list.vue:20 ~ fetchNextPage ~ previousResult:', previousResult)
       // No new feed posts
       if (!fetchMoreResult) return previousResult
 
