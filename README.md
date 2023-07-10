@@ -1,46 +1,50 @@
 # bitrock-news
 
-This template should help get you started developing with Vue 3 in Vite.
+A HackerNews-like clone build with Vue3 and Supabase. Inspired by the [supabase-graphql-example]](https://github.com/supabase-community/supabase-graphql-example/tree/main) 
 
-## Recommended IDE Setup
+### Showcase
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+### Backend
 
-## Type Support for `.vue` Imports in TS
+- CRUD (Query + Mutation Operations)
+- Cursor Based Pagination
+- Authorization / Postgres Row Level Security
+- [Supabase](https://supabase.com) - Backend with a Postgres Database, Authentication, instant APIs, Realtime subscriptions and Storage.
+- [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org).
+- [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
+- [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### Frontend
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+- [Vue.js](https://vuejs.org) - Vue.js
+- [TypeScript](https://www.typescriptlang.org)
+- [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
+- [vite-plugin-graphql-codegen](https://github.com/danielwaltz/vite-plugin-graphql-codegen) - Zero-config vite plugin that uses the vite file watcher to run graphql codegen programmatically without needing to start a separate watcher.
+- [Vue Apollo](https://apollo.vuejs.org/) - Apollo/GraphQL integration for VueJS
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Functionality
 
-## Customize configuration
+- Registration
+- Get a feed of posts
+- Create Post
+- Delete Post
+- Create Comment
+- Delete Comment
+- Upvote/Downvote Post
+- View Profile
+- Edit Profile
+- Pagination (Posts, Comments)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+# QuickStart
 
-## Project Setup
+### Setup env vars
 
-```sh
-pnpm install
-```
+- `cp app/.env.example app/.env.local`
+- Fill in your url and anon key from the Supabase Dashboard: https://app.supabase.io/project/_/settings/api
 
-### Compile and Hot-Reload for Development
+### Install dependencies, run app
 
-```sh
+```bash
+pnpm i
 pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
 ```
