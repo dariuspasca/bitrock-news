@@ -6,7 +6,7 @@ import { IOrderByDirection } from '@/types/graphql.types'
 <template>
   <section class="body-font w-full overflow-hidden text-gray-600">
     <div class="container mx-auto px-3 py-10">
-      <FeedList :order-by="[{ score: IOrderByDirection.DescNullsFirst }]" />
+      <FeedList :order-by="[{ created_at: IOrderByDirection.DescNullsFirst }]" />
     </div>
   </section>
 </template>

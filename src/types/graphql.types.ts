@@ -804,6 +804,7 @@ export type IVotePostMutationResult = {
 export type IFeedQueryVariables = Exact<{
   profileId?: InputMaybe<Scalars['UUID']['input']>
   after?: InputMaybe<Scalars['Cursor']['input']>
+  orderBy?: InputMaybe<Array<IPostsOrderBy> | IPostsOrderBy>
 }>
 
 export type IFeedQueryResult = {
@@ -1246,8 +1247,8 @@ export type VotePostMutationCompositionFunctionResult = VueApolloComposable.UseM
   IVotePostMutationVariables
 >
 export const FeedDocument = gql`
-  query Feed($profileId: UUID, $after: Cursor) {
-    postsCollection(orderBy: [{ score: DescNullsFirst }], first: 10, after: $after) {
+  query Feed($profileId: UUID, $after: Cursor, $orderBy: [postsOrderBy!]) {
+    postsCollection(orderBy: $orderBy, first: 10, after: $after) {
       edges {
         node {
           ...Feed_PostFragment
@@ -1276,6 +1277,7 @@ export const FeedDocument = gql`
  * const { result, loading, error } = useFeedQuery({
  *   profileId: // value for 'profileId'
  *   after: // value for 'after'
+ *   orderBy: // value for 'orderBy'
  * });
  */
 export function useFeedQuery(

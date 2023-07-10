@@ -12,6 +12,12 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
+      name: 'newest',
+      path: '/newest',
+      component: () => import('../views/NewestFeed.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       name: 'submit',
       path: '/submit',
       component: () => import('../views/SubmitView.vue'),

@@ -3,12 +3,22 @@ import FeedItem from '@/components/feed-item.vue'
 import apolloClient from '@/libs/apollo-provider'
 import { provideApolloClient } from '@vue/apollo-composable'
 import { useAuthStore } from '@/stores/auth'
-import { useFeedQuery } from '@/types/graphql.types'
+import { useFeedQuery, type IFeedQueryVariables } from '@/types/graphql.types'
+
+const props = defineProps<{
+  orderBy: IFeedQueryVariables['orderBy']
+}>()
 
 const userStore = useAuthStore()
 
 const { result, loading, fetchMore } = provideApolloClient(apolloClient)(() =>
-  useFeedQuery({ profileId: userStore.user?.id ?? null }, { notifyOnNetworkStatusChange: true })
+  useFeedQuery(
+    {
+      profileId: userStore.user?.id ?? null,
+      orderBy: props.orderBy
+    },
+    { notifyOnNetworkStatusChange: true }
+  )
 )
 
 function fetchNextPage() {
