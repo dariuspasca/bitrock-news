@@ -24,6 +24,12 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
+      name: 'post',
+      path: '/post/:postId',
+      component: () => import('../views/PostView.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       name: 'login',
       path: '/login',
       component: () => import('../views/LoginView.vue'),

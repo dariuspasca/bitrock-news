@@ -11,7 +11,7 @@ export const Feed_PostFragment = gql(/* GraphQL */ `
     profile: profiles {
       username
     }
-    comments: commentsCollection {
+    commentsCollection {
       totalCount
     }
     ...Votes_PostFragment

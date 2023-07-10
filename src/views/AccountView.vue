@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ProfileEdit from '@/components/profile-edit.vue'
+import ProfileForm from '@/components/profile-form.vue'
 </script>
 
 <template>
-  <ProfileEdit />
+  <ProfileForm />
 </template>

@@ -35,26 +35,29 @@ const createdAt = computed(() => timeAgo.format(new Date(props.post.created_at))
           <Rocket class="mr-1 h-4 w-4" />
           {{ props.post.score }} points
         </span>
-        <span
-          class="mr-3 inline-flex items-center border-r-2 border-gray-200 py-1 pr-3 text-sm text-gray-400"
+        <RouterLink
+          :to="{ name: 'post', params: { postId: props.post.id } }"
+          class="mr-3 inline-flex items-center border-r-2 border-gray-200 py-1 pr-3 text-sm text-gray-400 hover:text-orange-400"
         >
           <MessageCircle class="mr-1 h-4 w-4" />
-          {{ props.post.comments?.totalCount ?? 0 }}
-          {{ props.post.comments?.totalCount !== 1 ? 'comments' : 'comment' }}
-        </span>
-        <RouterLink :to="{ name: 'user', params: { username: props.post.profile?.username } }">
-          <a
-            className="text-gray-400 hover:text-orange-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
-          >
-            <UserCircle class="mr-1 inline-block h-4 w-4" />
-
-            {{ props.post.profile?.username }}
-          </a>
+          {{ props.post.commentsCollection?.totalCount ?? 0 }}
+          {{ props.post.commentsCollection?.totalCount !== 1 ? 'comments' : 'comment' }}
         </RouterLink>
-        <span class="mr-3 inline-flex items-center py-1 pr-3 text-sm text-gray-400">
+        <RouterLink
+          :to="{ name: 'user', params: { username: props.post.profile?.username } }"
+          className="text-gray-400 hover:text-orange-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
+        >
+          <UserCircle class="mr-1 inline-block h-4 w-4" />
+
+          {{ props.post.profile?.username }}
+        </RouterLink>
+        <RouterLink
+          :to="{ name: 'post', params: { postId: props.post.id } }"
+          class="mr-3 inline-flex items-center py-1 pr-3 text-sm text-gray-400 hover:text-orange-400"
+        >
           <Calendar class="mr-1 h-4 w-4" />
           {{ createdAt }}
-        </span>
+        </RouterLink>
       </div>
     </div>
   </div>

@@ -344,9 +344,9 @@ export type IUuidFilter = {
 }
 
 export type IComments = INode & {
-  content: Scalars['String']['output']
   created_at: Scalars['Datetime']['output']
   id: Scalars['BigInt']['output']
+  message: Scalars['String']['output']
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output']
   post_id: Scalars['BigInt']['output']
@@ -375,17 +375,17 @@ export type ICommentsEdge = {
 }
 
 export type ICommentsFilter = {
-  content?: InputMaybe<IStringFilter>
   created_at?: InputMaybe<IDatetimeFilter>
   id?: InputMaybe<IBigIntFilter>
+  message?: InputMaybe<IStringFilter>
   nodeId?: InputMaybe<IIdFilter>
   post_id?: InputMaybe<IBigIntFilter>
   profile_id?: InputMaybe<IUuidFilter>
 }
 
 export type ICommentsInsertInput = {
-  content?: InputMaybe<Scalars['String']['input']>
   created_at?: InputMaybe<Scalars['Datetime']['input']>
+  message?: InputMaybe<Scalars['String']['input']>
   post_id?: InputMaybe<Scalars['BigInt']['input']>
   profile_id?: InputMaybe<Scalars['UUID']['input']>
 }
@@ -398,16 +398,16 @@ export type ICommentsInsertResponse = {
 }
 
 export type ICommentsOrderBy = {
-  content?: InputMaybe<IOrderByDirection>
   created_at?: InputMaybe<IOrderByDirection>
   id?: InputMaybe<IOrderByDirection>
+  message?: InputMaybe<IOrderByDirection>
   post_id?: InputMaybe<IOrderByDirection>
   profile_id?: InputMaybe<IOrderByDirection>
 }
 
 export type ICommentsUpdateInput = {
-  content?: InputMaybe<Scalars['String']['input']>
   created_at?: InputMaybe<Scalars['Datetime']['input']>
+  message?: InputMaybe<Scalars['String']['input']>
   post_id?: InputMaybe<Scalars['BigInt']['input']>
   profile_id?: InputMaybe<Scalars['UUID']['input']>
 }
@@ -715,6 +715,14 @@ export type IVotesUpdateResponse = {
   records: Array<IVotes>
 }
 
+export type IComment_Fragment = {
+  id: any
+  message: string
+  created_at: any
+  posts?: { id: any; title?: string | null } | null
+  profiles?: { id: any; username?: string | null } | null
+}
+
 export type IFeed_PostFragment = {
   id: any
   title?: string | null
@@ -722,7 +730,7 @@ export type IFeed_PostFragment = {
   score: number
   created_at: any
   profile?: { username?: string | null } | null
-  comments?: { totalCount: number } | null
+  commentsCollection?: { totalCount: number } | null
   upVoteByViewer?: { totalCount: number } | null
   downVoteByViewer?: { totalCount: number } | null
 }
@@ -734,6 +742,14 @@ export type IVotes_PostFragment = {
   downVoteByViewer?: { totalCount: number } | null
 }
 
+export type IDeleteCommentMutationVariables = Exact<{
+  commentId: Scalars['BigInt']['input']
+}>
+
+export type IDeleteCommentMutationResult = {
+  deleteFromcommentsCollection: { affectedCount: number }
+}
+
 export type IDeletePostVoteMutationVariables = Exact<{
   postId: Scalars['BigInt']['input']
   profileId: Scalars['UUID']['input']
@@ -741,6 +757,16 @@ export type IDeletePostVoteMutationVariables = Exact<{
 
 export type IDeletePostVoteMutationResult = {
   deleteFromvotesCollection: { __typename: 'votesDeleteResponse' }
+}
+
+export type ISubmitCommentMutationVariables = Exact<{
+  postId: Scalars['BigInt']['input']
+  profileId: Scalars['UUID']['input']
+  message: Scalars['String']['input']
+}>
+
+export type ISubmitCommentMutationResult = {
+  insertIntocommentsCollection?: { affectedCount: number } | null
 }
 
 export type ISubmitPostMutationVariables = Exact<{
@@ -789,7 +815,7 @@ export type IFeedQueryResult = {
         score: number
         created_at: any
         profile?: { username?: string | null } | null
-        comments?: { totalCount: number } | null
+        commentsCollection?: { totalCount: number } | null
         upVoteByViewer?: { totalCount: number } | null
         downVoteByViewer?: { totalCount: number } | null
       }
@@ -800,6 +826,43 @@ export type IFeedQueryResult = {
       hasNextPage: boolean
       hasPreviousPage: boolean
     }
+  } | null
+}
+
+export type IPostQueryVariables = Exact<{
+  postId: Scalars['BigInt']['input']
+  profileId: Scalars['UUID']['input']
+}>
+
+export type IPostQueryResult = {
+  post?: {
+    edges: Array<{
+      cursor: string
+      node: {
+        id: any
+        title?: string | null
+        url?: string | null
+        score: number
+        created_at: any
+        comments?: {
+          edges: Array<{
+            cursor: string
+            node: {
+              id: any
+              message: string
+              created_at: any
+              posts?: { id: any; title?: string | null } | null
+              profiles?: { id: any; username?: string | null } | null
+            }
+          }>
+          pageInfo: { hasNextPage: boolean }
+        } | null
+        profile?: { username?: string | null } | null
+        commentsCollection?: { totalCount: number } | null
+        upVoteByViewer?: { totalCount: number } | null
+        downVoteByViewer?: { totalCount: number } | null
+      }
+    }>
   } | null
 }
 
@@ -824,7 +887,7 @@ export type IUserProfileQueryResult = {
               score: number
               created_at: any
               profile?: { username?: string | null } | null
-              comments?: { totalCount: number } | null
+              commentsCollection?: { totalCount: number } | null
               upVoteByViewer?: { totalCount: number } | null
               downVoteByViewer?: { totalCount: number } | null
             }
@@ -835,6 +898,21 @@ export type IUserProfileQueryResult = {
   } | null
 }
 
+export const Comment_FragmentDoc = gql`
+  fragment Comment_Fragment on comments {
+    id
+    message
+    created_at
+    posts {
+      id
+      title
+    }
+    profiles {
+      id
+      username
+    }
+  }
+`
 export const Votes_PostFragmentDoc = gql`
   fragment Votes_PostFragment on posts {
     upVoteByViewer: votesCollection(
@@ -859,7 +937,7 @@ export const Feed_PostFragmentDoc = gql`
     profile: profiles {
       username
     }
-    comments: commentsCollection {
+    commentsCollection {
       totalCount
     }
     ...Votes_PostFragment
@@ -873,6 +951,53 @@ export const User_FragmentDoc = gql`
     bio
   }
 `
+export const DeleteCommentDocument = gql`
+  mutation DeleteComment($commentId: BigInt!) {
+    deleteFromcommentsCollection(filter: { id: { eq: $commentId } }) {
+      affectedCount
+    }
+  }
+`
+
+/**
+ * __useDeleteCommentMutation__
+ *
+ * To run a mutation, you first call `useDeleteCommentMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCommentMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDeleteCommentMutation({
+ *   variables: {
+ *     commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useDeleteCommentMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        IDeleteCommentMutationResult,
+        IDeleteCommentMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          IDeleteCommentMutationResult,
+          IDeleteCommentMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    IDeleteCommentMutationResult,
+    IDeleteCommentMutationVariables
+  >(DeleteCommentDocument, options)
+}
+export type DeleteCommentMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+  IDeleteCommentMutationResult,
+  IDeleteCommentMutationVariables
+>
 export const DeletePostVoteDocument = gql`
   mutation DeletePostVote($postId: BigInt!, $profileId: UUID!) {
     deleteFromvotesCollection(
@@ -922,6 +1047,57 @@ export function useDeletePostVoteMutation(
 export type DeletePostVoteMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
   IDeletePostVoteMutationResult,
   IDeletePostVoteMutationVariables
+>
+export const SubmitCommentDocument = gql`
+  mutation SubmitComment($postId: BigInt!, $profileId: UUID!, $message: String!) {
+    insertIntocommentsCollection(
+      objects: { post_id: $postId, profile_id: $profileId, message: $message }
+    ) {
+      affectedCount
+    }
+  }
+`
+
+/**
+ * __useSubmitCommentMutation__
+ *
+ * To run a mutation, you first call `useSubmitCommentMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitCommentMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useSubmitCommentMutation({
+ *   variables: {
+ *     postId: // value for 'postId'
+ *     profileId: // value for 'profileId'
+ *     message: // value for 'message'
+ *   },
+ * });
+ */
+export function useSubmitCommentMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        ISubmitCommentMutationResult,
+        ISubmitCommentMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          ISubmitCommentMutationResult,
+          ISubmitCommentMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    ISubmitCommentMutationResult,
+    ISubmitCommentMutationVariables
+  >(SubmitCommentDocument, options)
+}
+export type SubmitCommentMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+  ISubmitCommentMutationResult,
+  ISubmitCommentMutationVariables
 >
 export const SubmitPostDocument = gql`
   mutation SubmitPost($profileId: UUID!, $title: String, $url: String) {
@@ -1149,6 +1325,92 @@ export function useFeedLazyQuery(
 export type FeedQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
   IFeedQueryResult,
   IFeedQueryVariables
+>
+export const PostDocument = gql`
+  query Post($postId: BigInt!, $profileId: UUID!) {
+    post: postsCollection(filter: { id: { eq: $postId } }, first: 1) {
+      edges {
+        cursor
+        node {
+          ...Feed_PostFragment
+          comments: commentsCollection(first: 15, orderBy: [{ created_at: DescNullsLast }]) {
+            edges {
+              cursor
+              node {
+                ...Comment_Fragment
+              }
+            }
+            pageInfo {
+              hasNextPage
+            }
+          }
+        }
+      }
+    }
+  }
+  ${Feed_PostFragmentDoc}
+  ${Comment_FragmentDoc}
+`
+
+/**
+ * __usePostQuery__
+ *
+ * To run a query within a Vue component, call `usePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = usePostQuery({
+ *   postId: // value for 'postId'
+ *   profileId: // value for 'profileId'
+ * });
+ */
+export function usePostQuery(
+  variables:
+    | IPostQueryVariables
+    | VueCompositionApi.Ref<IPostQueryVariables>
+    | ReactiveFunction<IPostQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useQuery<IPostQueryResult, IPostQueryVariables>(
+    PostDocument,
+    variables,
+    options
+  )
+}
+export function usePostLazyQuery(
+  variables:
+    | IPostQueryVariables
+    | VueCompositionApi.Ref<IPostQueryVariables>
+    | ReactiveFunction<IPostQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<IPostQueryResult, IPostQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<IPostQueryResult, IPostQueryVariables>(
+    PostDocument,
+    variables,
+    options
+  )
+}
+export type PostQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
+  IPostQueryResult,
+  IPostQueryVariables
 >
 export const UserProfileDocument = gql`
   query UserProfile($profileId: UUID, $username: String) {

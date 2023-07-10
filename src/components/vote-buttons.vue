@@ -19,8 +19,8 @@ const props = defineProps<{
 }>()
 
 const userStore = useAuthStore()
-const isUpvoted = computed(() => props.upvotes === 1)
-const isDownvoted = computed(() => props.downvotes === 1)
+const isUpvoted = computed(() => props.upvotes === 1 && !!userStore.user)
+const isDownvoted = computed(() => props.downvotes === 1 && !!userStore.user)
 
 function votePost(voteDirection: IVote_Direction) {
   const { mutate: deleteVote } = provideApolloClient(apolloClient)(() =>
