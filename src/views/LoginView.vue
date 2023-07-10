@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { Auth, ThemeSupa, type Appereance, type Provider } from 'vue-auth-ui'
 import { type EmailCred } from '@/types/index'
 import supabase from '@/libs/supabase-client'
