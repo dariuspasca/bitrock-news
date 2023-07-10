@@ -1,8 +1,6 @@
 # bitrock-news
 
-A HackerNews-like clone build with Vue3 and Supabase. Inspired by the [supabase-graphql-example]](https://github.com/supabase-community/supabase-graphql-example/tree/main) 
-
-### Showcase
+A HackerNews-like clone build with Vue.js 3 and Supabase. Inspired by the [supabase-graphql-example](https://github.com/supabase-community/supabase-graphql-example/tree/main) 
 
 ### Backend
 
@@ -11,7 +9,7 @@ A HackerNews-like clone build with Vue3 and Supabase. Inspired by the [supabase-
 - Authorization / Postgres Row Level Security
 - [Supabase](https://supabase.com) - Backend with a Postgres Database, Authentication, instant APIs, Realtime subscriptions and Storage.
 - [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org).
-- [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
+- [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that updates a post score
 - [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
 
 ### Frontend
