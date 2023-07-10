@@ -80,13 +80,13 @@ watch(
           :post-id="(route.params.postId as string)"
         />
 
-        <div
+        <CommentItem
           className="mt-10"
           v-for="comment in result.post.edges[0].node.comments?.edges"
           :key="comment.node.id"
-        >
-          <CommentItem :comment="comment.node" @comment-deleted="refetch()" />
-        </div>
+          :comment="comment.node"
+          @comment-deleted="refetch()"
+        />
       </div>
       <button
         v-if="result?.post?.edges[0].node.comments?.pageInfo.hasNextPage"

@@ -10,7 +10,7 @@ export const GET_FEED = gql(/* GraphQL */ `
         node {
           ...Feed_PostFragment
           comments: commentsCollection(
-            first: 2
+            first: 15
             after: $commentCursor
             orderBy: [{ created_at: DescNullsLast }]
           ) {

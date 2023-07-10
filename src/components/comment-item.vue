@@ -55,10 +55,13 @@ onError((error) => {
           </RouterLink>
         </h3>
         <p class="text-sm text-gray-500">
-          <span class="text-gray-800 inline-flex items-center text-sm">
+          <RouterLink
+            :to="{ name: 'post', params: { postId: props.comment.posts?.id } }"
+            class="text-gray-800 inline-flex items-center text-sm hover:text-orange-500"
+          >
             <Calendar class="mr-1 h-4 w-4" />
             {{ createdAt }}
-          </span>
+          </RouterLink>
         </p>
       </div>
       <p class="text-sm text-gray-500">

@@ -28,6 +28,12 @@ const userStore = useAuthStore()
           ><span :class="{ 'text-black': isActive }">newest</span></RouterLink
         >
         <RouterLink
+          to="/comments"
+          class="mr-5 text-gray-400 hover:text-gray-900"
+          v-slot="{ isActive }"
+          ><span :class="{ 'text-black': isActive }">comments</span></RouterLink
+        >
+        <RouterLink
           to="/submit"
           class="mr-5 text-gray-400 hover:text-gray-900"
           v-slot="{ isActive }"

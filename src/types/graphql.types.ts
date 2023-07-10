@@ -826,6 +826,26 @@ export type IFeedQueryResult = {
   } | null
 }
 
+export type ICommentsFeedQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['Cursor']['input']>
+}>
+
+export type ICommentsFeedQueryResult = {
+  comments?: {
+    pageInfo: { hasNextPage: boolean; endCursor?: string | null }
+    edges: Array<{
+      cursor: string
+      node: {
+        id: any
+        message: string
+        created_at: any
+        posts?: { id: any; title?: string | null } | null
+        profiles?: { id: any; username?: string | null } | null
+      }
+    }>
+  } | null
+}
+
 export type IPostQueryVariables = Exact<{
   postId: Scalars['BigInt']['input']
   profileId: Scalars['UUID']['input']
@@ -1324,6 +1344,87 @@ export type FeedQueryCompositionFunctionResult = VueApolloComposable.UseQueryRet
   IFeedQueryResult,
   IFeedQueryVariables
 >
+export const CommentsFeedDocument = gql`
+  query CommentsFeed($after: Cursor) {
+    comments: commentsCollection(
+      orderBy: [{ created_at: DescNullsFirst }]
+      first: 15
+      after: $after
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          ...Comment_Fragment
+        }
+      }
+    }
+  }
+  ${Comment_FragmentDoc}
+`
+
+/**
+ * __useCommentsFeedQuery__
+ *
+ * To run a query within a Vue component, call `useCommentsFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsFeedQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useCommentsFeedQuery({
+ *   after: // value for 'after'
+ * });
+ */
+export function useCommentsFeedQuery(
+  variables:
+    | ICommentsFeedQueryVariables
+    | VueCompositionApi.Ref<ICommentsFeedQueryVariables>
+    | ReactiveFunction<ICommentsFeedQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useQuery<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>(
+    CommentsFeedDocument,
+    variables,
+    options
+  )
+}
+export function useCommentsFeedLazyQuery(
+  variables:
+    | ICommentsFeedQueryVariables
+    | VueCompositionApi.Ref<ICommentsFeedQueryVariables>
+    | ReactiveFunction<ICommentsFeedQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>
+      > = {}
+) {
+  return VueApolloComposable.useLazyQuery<ICommentsFeedQueryResult, ICommentsFeedQueryVariables>(
+    CommentsFeedDocument,
+    variables,
+    options
+  )
+}
+export type CommentsFeedQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
+  ICommentsFeedQueryResult,
+  ICommentsFeedQueryVariables
+>
 export const PostDocument = gql`
   query Post($postId: BigInt!, $profileId: UUID!, $commentCursor: Cursor) {
     post: postsCollection(filter: { id: { eq: $postId } }, first: 1) {
@@ -1332,7 +1433,7 @@ export const PostDocument = gql`
         node {
           ...Feed_PostFragment
           comments: commentsCollection(
-            first: 2
+            first: 15
             after: $commentCursor
             orderBy: [{ created_at: DescNullsLast }]
           ) {

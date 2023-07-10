@@ -18,6 +18,12 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
+      name: 'comments',
+      path: '/comments',
+      component: () => import('../views/CommentsFeed.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       name: 'submit',
       path: '/submit',
       component: () => import('../views/SubmitView.vue'),
