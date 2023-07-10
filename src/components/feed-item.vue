@@ -1,15 +1,46 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Calendar, MessageCircle, Rocket, UserCircle } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import { Calendar, MessageCircle, Rocket, UserCircle, Trash } from 'lucide-vue-next'
+import ModalDialog from './modal-dialog.vue'
 import VoteButtons from '@/components/vote-buttons.vue'
-import { type IFeed_PostFragment } from '@/types/graphql.types'
+import { useDeletePostMutation, type IFeed_PostFragment } from '@/types/graphql.types'
 import { timeAgo } from '@/libs/time-ago'
+import { provideApolloClient } from '@vue/apollo-composable'
+import apolloClient from '@/libs/apollo-provider'
+import { notify } from '@/libs/notiwind'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   post: IFeed_PostFragment
 }>()
 
+const userStore = useAuthStore()
+const router = useRouter()
+const showConfirmDelete = ref(false)
 const createdAt = computed(() => timeAgo.format(new Date(props.post.created_at)))
+
+const { mutate, loading, onDone, onError } = provideApolloClient(apolloClient)(() =>
+  useDeletePostMutation()
+)
+
+onDone(() => {
+  showConfirmDelete.value = false
+  router.go(0)
+})
+
+onError((error) => {
+  console.error(error)
+  notify(
+    {
+      group: 'bottom',
+      title: 'Error',
+      text: 'Ops, something unexpexpected happened',
+      type: 'error'
+    },
+    2000
+  )
+})
 </script>
 
 <template>
@@ -55,10 +86,42 @@ const createdAt = computed(() => timeAgo.format(new Date(props.post.created_at))
           :to="{ name: 'post', params: { postId: props.post.id } }"
           class="mr-3 inline-flex items-center py-1 pr-3 text-sm text-gray-400 hover:text-orange-400"
         >
-          <Calendar class="mr-1 h-4 w-4" />
+          <Calendar class="w-4 h-4 mr-1" />
           {{ createdAt }}
         </RouterLink>
+        <button
+          v-if="userStore.user && userStore.user.id === props.post.profile?.id"
+          className="text-gray-400 hover:text-orange-400 inline-flex items-center text-sm pl-3 ml-3 border-l-2 border-gray-200"
+          @click="showConfirmDelete = true"
+        >
+          <Trash class="h-4 w-4 mr-1" />
+          Delete
+        </button>
       </div>
+      <ModalDialog :show="showConfirmDelete">
+        <template #header>Do you want to delete your post?</template>
+        <template #body>Deleting you post cannot be reverted</template>
+        <template #footer>
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="bg-gray-100 hover:bg-gray-800 hover:text-white text-gray border-gray-900 border py-1 px-3 rounded text-xs"
+              @click="showConfirmDelete = false"
+              :disabled="loading"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="bg-orange-500 hover:bg-orange-600/90 text-white py-1 px-3 rounded text-xs"
+              @click="mutate({ postId: props.post.id })"
+              :disabled="loading"
+            >
+              Confirm
+            </button>
+          </div>
+        </template>
+      </ModalDialog>
     </div>
   </div>
 </template>

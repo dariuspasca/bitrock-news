@@ -9,6 +9,7 @@ export const Feed_PostFragment = gql(/* GraphQL */ `
     score
     created_at
     profile: profiles {
+      id
       username
     }
     commentsCollection {

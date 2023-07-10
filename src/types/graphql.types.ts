@@ -729,7 +729,7 @@ export type IFeed_PostFragment = {
   url?: string | null
   score: number
   created_at: any
-  profile?: { username?: string | null } | null
+  profile?: { id: any; username?: string | null } | null
   commentsCollection?: { totalCount: number } | null
   upVoteByViewer?: { totalCount: number } | null
   downVoteByViewer?: { totalCount: number } | null
@@ -816,7 +816,7 @@ export type IFeedQueryResult = {
         url?: string | null
         score: number
         created_at: any
-        profile?: { username?: string | null } | null
+        profile?: { id: any; username?: string | null } | null
         commentsCollection?: { totalCount: number } | null
         upVoteByViewer?: { totalCount: number } | null
         downVoteByViewer?: { totalCount: number } | null
@@ -875,7 +875,7 @@ export type IPostQueryResult = {
           }>
           pageInfo: { hasNextPage: boolean; endCursor?: string | null }
         } | null
-        profile?: { username?: string | null } | null
+        profile?: { id: any; username?: string | null } | null
         commentsCollection?: { totalCount: number } | null
         upVoteByViewer?: { totalCount: number } | null
         downVoteByViewer?: { totalCount: number } | null
@@ -883,6 +883,12 @@ export type IPostQueryResult = {
     }>
   } | null
 }
+
+export type IDeletePostMutationVariables = Exact<{
+  postId: Scalars['BigInt']['input']
+}>
+
+export type IDeletePostMutationResult = { deleteFrompostsCollection: { affectedCount: number } }
 
 export type IUserProfileQueryVariables = Exact<{
   profileId?: InputMaybe<Scalars['UUID']['input']>
@@ -904,7 +910,7 @@ export type IUserProfileQueryResult = {
               url?: string | null
               score: number
               created_at: any
-              profile?: { username?: string | null } | null
+              profile?: { id: any; username?: string | null } | null
               commentsCollection?: { totalCount: number } | null
               upVoteByViewer?: { totalCount: number } | null
               downVoteByViewer?: { totalCount: number } | null
@@ -953,6 +959,7 @@ export const Feed_PostFragmentDoc = gql`
     score
     created_at
     profile: profiles {
+      id
       username
     }
     commentsCollection {
@@ -1516,6 +1523,53 @@ export function usePostLazyQuery(
 export type PostQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
   IPostQueryResult,
   IPostQueryVariables
+>
+export const DeletePostDocument = gql`
+  mutation DeletePost($postId: BigInt!) {
+    deleteFrompostsCollection(filter: { id: { eq: $postId } }) {
+      affectedCount
+    }
+  }
+`
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDeletePostMutation({
+ *   variables: {
+ *     postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        IDeletePostMutationResult,
+        IDeletePostMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          IDeletePostMutationResult,
+          IDeletePostMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<IDeletePostMutationResult, IDeletePostMutationVariables>(
+    DeletePostDocument,
+    options
+  )
+}
+export type DeletePostMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+  IDeletePostMutationResult,
+  IDeletePostMutationVariables
 >
 export const UserProfileDocument = gql`
   query UserProfile($profileId: UUID, $username: String) {
