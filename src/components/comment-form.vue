@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import apolloClient from '@/libs/apollo-provider'
 import { useSubmitCommentMutation } from '@/types/graphql.types'
 import { provideApolloClient } from '@vue/apollo-composable'

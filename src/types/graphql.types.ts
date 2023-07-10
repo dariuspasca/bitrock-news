@@ -803,6 +803,7 @@ export type IVotePostMutationResult = {
 
 export type IFeedQueryVariables = Exact<{
   profileId?: InputMaybe<Scalars['UUID']['input']>
+  after?: InputMaybe<Scalars['Cursor']['input']>
 }>
 
 export type IFeedQueryResult = {
@@ -820,18 +821,14 @@ export type IFeedQueryResult = {
         downVoteByViewer?: { totalCount: number } | null
       }
     }>
-    pageInfo: {
-      endCursor?: string | null
-      startCursor?: string | null
-      hasNextPage: boolean
-      hasPreviousPage: boolean
-    }
+    pageInfo: { hasNextPage: boolean; endCursor?: string | null }
   } | null
 }
 
 export type IPostQueryVariables = Exact<{
   postId: Scalars['BigInt']['input']
   profileId: Scalars['UUID']['input']
+  commentCursor?: InputMaybe<Scalars['Cursor']['input']>
 }>
 
 export type IPostQueryResult = {
@@ -855,7 +852,7 @@ export type IPostQueryResult = {
               profiles?: { id: any; username?: string | null } | null
             }
           }>
-          pageInfo: { hasNextPage: boolean }
+          pageInfo: { hasNextPage: boolean; endCursor?: string | null }
         } | null
         profile?: { username?: string | null } | null
         commentsCollection?: { totalCount: number } | null
@@ -1249,18 +1246,16 @@ export type VotePostMutationCompositionFunctionResult = VueApolloComposable.UseM
   IVotePostMutationVariables
 >
 export const FeedDocument = gql`
-  query Feed($profileId: UUID) {
-    postsCollection(first: 10) {
+  query Feed($profileId: UUID, $after: Cursor) {
+    postsCollection(orderBy: [{ score: DescNullsFirst }], first: 10, after: $after) {
       edges {
         node {
           ...Feed_PostFragment
         }
       }
       pageInfo {
-        endCursor
-        startCursor
         hasNextPage
-        hasPreviousPage
+        endCursor
       }
     }
   }
@@ -1280,6 +1275,7 @@ export const FeedDocument = gql`
  * @example
  * const { result, loading, error } = useFeedQuery({
  *   profileId: // value for 'profileId'
+ *   after: // value for 'after'
  * });
  */
 export function useFeedQuery(
@@ -1327,13 +1323,17 @@ export type FeedQueryCompositionFunctionResult = VueApolloComposable.UseQueryRet
   IFeedQueryVariables
 >
 export const PostDocument = gql`
-  query Post($postId: BigInt!, $profileId: UUID!) {
+  query Post($postId: BigInt!, $profileId: UUID!, $commentCursor: Cursor) {
     post: postsCollection(filter: { id: { eq: $postId } }, first: 1) {
       edges {
         cursor
         node {
           ...Feed_PostFragment
-          comments: commentsCollection(first: 15, orderBy: [{ created_at: DescNullsLast }]) {
+          comments: commentsCollection(
+            first: 2
+            after: $commentCursor
+            orderBy: [{ created_at: DescNullsLast }]
+          ) {
             edges {
               cursor
               node {
@@ -1342,6 +1342,7 @@ export const PostDocument = gql`
             }
             pageInfo {
               hasNextPage
+              endCursor
             }
           }
         }
@@ -1366,6 +1367,7 @@ export const PostDocument = gql`
  * const { result, loading, error } = usePostQuery({
  *   postId: // value for 'postId'
  *   profileId: // value for 'profileId'
+ *   commentCursor: // value for 'commentCursor'
  * });
  */
 export function usePostQuery(
