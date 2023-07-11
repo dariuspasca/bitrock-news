@@ -45,7 +45,7 @@ onError((error) => {
 </script>
 
 <template>
-  <div class="mb-8 flex flex-wrap border-b-2 border-gray-100 py-1 md:flex-nowrap">
+  <div class="mb-8 flex flex-wrap border-b-2 border-gray-100 py-2 md:flex-nowrap">
     <div class="mr-3 pt-4">
       <VoteButtons
         :postId="props.post.id"

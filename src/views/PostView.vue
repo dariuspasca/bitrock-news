@@ -73,9 +73,9 @@ watch(
 </script>
 
 <template>
-  <section className="text-gray-600 body-font overflow-hidden w-full">
+  <section className="container mx-auto px-3 py-10 text-gray-600 body-font overflow-hidden w-full">
     <div v-if="loading && !result">Loading post...</div>
-    <div v-else-if="result?.post?.edges[0]" className="container px-5 py-24 mx-auto">
+    <div v-else-if="result?.post?.edges[0]">
       <FeedItem :post="result.post.edges[0].node" />
 
       <div className="max-w-md">

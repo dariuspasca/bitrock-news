@@ -67,16 +67,18 @@ function updateProfile() {
     <h1 class="mb-5 text-xl font-semibold tracking-tight">Account</h1>
     <div class="mb-4">
       <label htmlFor="username" class="mb-2 block">Username</label>
-      <input class="w-full" autocomplete="off" id="username" type="text" v-model.trim="username" />
+      <input
+        class="w-full border border-gray-200 rounded-sm"
+        autocomplete="off"
+        id="username"
+        type="text"
+        v-model.trim="username"
+      />
     </div>
 
     <div class="mb-2">
       <label htmlFor="bio" class="mb-2 block">Bio</label>
-      <textarea
-        id="bio"
-        class="w-full rounded-sm border-2 border-solid border-gray-100"
-        v-model="bio"
-      />
+      <textarea id="bio" class="w-full border border-gray-200 rounded-sm" v-model="bio" />
     </div>
     <p v-show="errorMessage" class="text-red-500 text-xs mb-4">{{ errorMessage }}</p>
     <button

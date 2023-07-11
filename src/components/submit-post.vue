@@ -34,16 +34,28 @@ onError((error) => {
 </script>
 
 <template>
-  <form class="container mx-auto max-w-md px-5 py-24" v-on:submit.prevent="submitPost">
+  <form class="container mx-auto max-w-md px-5 py-4" v-on:submit.prevent="submitPost">
     <h1 class="mb-5 text-xl font-semibold tracking-tight">Submit</h1>
     <div class="mb-4">
       <label htmlFor="username" class="mb-2 block">Title</label>
-      <input class="w-full" autocomplete="off" id="username" type="text" v-model.trim="title" />
+      <input
+        class="w-full border border-gray-200 rounded-sm"
+        autocomplete="off"
+        id="username"
+        type="text"
+        v-model.trim="title"
+      />
     </div>
 
     <div class="mb-2">
       <label htmlFor="url" class="mb-2 block">Url</label>
-      <input class="w-full" autocomplete="off" id="url" type="text" v-model.trim="url" />
+      <input
+        class="w-full border border-gray-200 rounded-sm"
+        autocomplete="off"
+        id="url"
+        type="text"
+        v-model.trim="url"
+      />
     </div>
     <p v-show="errorMessage" class="text-red-500 text-xs mb-4">{{ errorMessage }}</p>
     <button
