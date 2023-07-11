@@ -8,18 +8,23 @@ import { useAuthStore } from '@/stores/auth'
 import FeedItem from '@/components/feed-item.vue'
 import CommentItem from '@/components/comment-item.vue'
 import CommentForm from '@/components/comment-form.vue'
+import { setPageTitle } from '@/libs/utils'
 
 const route = useRoute()
 const userStore = useAuthStore()
 
-const { result, loading, variables, refetch, fetchMore } = provideApolloClient(apolloClient)(() =>
+const { result, loading, variables, refetch, fetchMore, onResult } = provideApolloClient(
+  apolloClient
+)(() =>
   usePostQuery(
     { postId: (route.params.postId as string) ?? '', profileId: userStore.user?.id },
     { notifyOnNetworkStatusChange: true }
   )
 )
 
-function fetchNextPage() {
+onResult((result) => setPageTitle(result.data.post?.edges[0].node.title!))
+
+function fetchNextCommentsPage() {
   fetchMore({
     variables: {
       commentCursor: result.value?.post?.edges[0].node.comments?.pageInfo.endCursor
@@ -92,7 +97,7 @@ watch(
         v-if="result?.post?.edges[0].node.comments?.pageInfo.hasNextPage"
         type="submit"
         class="bg-orange-500 hover:bg-orange-600/90 text-white py-1 px-3 rounded text-xs mt-8"
-        @click="fetchNextPage"
+        @click="fetchNextCommentsPage"
         :disabled="loading"
       >
         {{ loading ? 'Loading...' : 'Load more' }}

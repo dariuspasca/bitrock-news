@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+
 import { Calendar, MessageCircle, Rocket, UserCircle, Trash } from 'lucide-vue-next'
 import ModalDialog from './modal-dialog.vue'
 import VoteButtons from '@/components/vote-buttons.vue'
@@ -75,7 +76,13 @@ onError((error) => {
           {{ props.post.commentsCollection?.totalCount !== 1 ? 'comments' : 'comment' }}
         </RouterLink>
         <RouterLink
-          :to="{ name: 'user', params: { username: props.post.profile?.username } }"
+          :to="{
+            name: 'user',
+            params: {
+              username: props.post.profile?.username,
+              pageTitle: props.post.profile?.username
+            }
+          }"
           className="text-gray-400 hover:text-orange-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
         >
           <UserCircle class="mr-1 inline-block h-4 w-4" />
